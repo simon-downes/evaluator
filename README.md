@@ -7,7 +7,7 @@ passes that to an evaluation engine and outputs the result.
 
 ## Features
 
-Support for the following operators and functions is provided by each implementation:
+Support for the following operators and unary functions is provided by each implementation:
 
 - Operators
   - Arithmetic: `-`, `+`, `*`, `/`
@@ -16,17 +16,9 @@ Support for the following operators and functions is provided by each implementa
   - Other: `(`, `)`, `%` (modulo), `^` (power)
 
 - Functions
-  - `sin()`
-  - `cos()`
-  - `tan()`
-  - `arcsin()`
-  - `arccos()`
-  - `arctan()`
-  - `log()`
-  - `ln()`
-  - `sqrt()`
-  - `abs()`
-  - `int()`
+  - Trigonometric: `sin()`, `cos()`, `tan()`, `arcsin()`, `arccos()`, `arctan()`
+  - Logarithmic: `log()`, `ln()`
+  - Other: `sqrt()`, `abs()`, `int()`
 
 ## Implementation Algorithm
 
