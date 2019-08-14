@@ -1,0 +1,26 @@
+{
+    "name":        "simon-downes/evaluator",
+    "description": "PHP implementation of expression evaluator engine",
+    "license":     "MIT",
+    "authors": [
+        {
+            "name":     "Simon Downes",
+            "email":    "simon@simondownes.co.uk",
+            "homepage": "https://simondownes.co.uk",
+            "role":     "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "~7.3",
+        "symfony/console": "^5.0@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Evaluator\\": "src/"
+        }
+    }
+}

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-gcc evaluator.c -o bin/evaluator
+gcc evaluator.c -o bin/evaluate

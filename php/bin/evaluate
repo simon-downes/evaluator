@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__. '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+use Evaluator\Expression;
+
+(new Application('Evaluator', '1.0.0'))
+    ->register('evaluate')
+        ->addArgument('expr', InputArgument::REQUIRED, 'The expression to evaluate')
+        ->setCode(function(InputInterface $input, OutputInterface $output) {
+            $output->writeln(
+                (new Expression(
+                        $input->getArgument('expr')
+                ))->evaluate()
+            );
+        })
+    ->getApplication()
+    ->setDefaultCommand('evaluate', true) // Single command application
+    ->run();
