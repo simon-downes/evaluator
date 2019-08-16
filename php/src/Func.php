@@ -42,8 +42,17 @@ class Func extends Token {
 
     }
 
-    public function isFunction() {
+    public function isFunction(): bool {
         return true;
+    }
+
+    public function isValidChar( string $char ): bool {
+
+        if( preg_match('/[a-z]/i', $char) ) {
+            return true;
+        }
+        return false;
+
     }
 
 }

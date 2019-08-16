@@ -14,33 +14,37 @@ class Operator extends Token {
     const OR          = '|';
     const NOT         = '!';
     const EQUAL       = '=';
+    const LT          = '<';
     const LT_EQUAL    = '<=';
+    const GT          = '>';
     const GT_EQUAL    = '>=';
     const OPEN_PAREN  = '(';
     const CLOSE_PAREN = ')';
     const MODULO      = '%';
     const POWER       = '^';
 
+    const VALID = [
+        self::ADD => true,
+        self::SUBTRACT => true,
+        self::MULTIPLY => true,
+        self::DIVIDE => true,
+        self::AND => true,
+        self::OR => true,
+        self::NOT => true,
+        self::EQUAL => true,
+        self::LT => true,
+        self::LT_EQUAL => true,
+        self::GT => true,
+        self::GT_EQUAL => true,
+        self::OPEN_PAREN => true,
+        self::CLOSE_PAREN => true,
+        self::MODULO => true,
+        self::POWER => true,
+    ];
+
     public function __construct( string $token ) {
 
-        $valid = [
-            static::ADD => true,
-            static::SUBTRACT => true,
-            static::MULTIPLY => true,
-            static::DIVIDE => true,
-            static::AND => true,
-            static::OR => true,
-            static::NOT => true,
-            static::EQUAL => true,
-            static::LT_EQUAL => true,
-            static::GT_EQUAL => true,
-            static::OPEN_PAREN => true,
-            static::CLOSE_PAREN => true,
-            static::MODULO => true,
-            static::POWER => true,
-        ];
-
-        if( !isset($valid[$token]) ) {
+        if( !isset(static::VALID[$token]) ) {
             throw new InvalidArgumentException("Unknown operator token: '{$token}'");
         }
 
@@ -48,8 +52,12 @@ class Operator extends Token {
 
     }
 
-    public function isOperator() {
+    public function isOperator(): bool {
         return true;
+    }
+
+    public function isValidChar( string $char ): bool {
+        return isset(static::VALID[$char]);
     }
 
 }

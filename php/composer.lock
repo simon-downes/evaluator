@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "31ba8dbd8b7d66db818749052736906d",
+    "content-hash": "ac02ee6baa656554fbbb17ca4c433935",
     "packages": [
         {
             "name": "psr/container",
@@ -61,12 +61,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "de39528308a5cd349bd80f95713956673736c3f2"
+                "reference": "5b4aec511c47b400ab4dfe1f5604346a5919fdb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/de39528308a5cd349bd80f95713956673736c3f2",
-                "reference": "de39528308a5cd349bd80f95713956673736c3f2",
+                "url": "https://api.github.com/repos/symfony/console/zipball/5b4aec511c47b400ab4dfe1f5604346a5919fdb8",
+                "reference": "5b4aec511c47b400ab4dfe1f5604346a5919fdb8",
                 "shasum": ""
             },
             "require": {
@@ -129,7 +129,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-08-14T13:44:59+00:00"
+            "time": "2019-08-15T11:36:52+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1793,7 +1793,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "~7.3"
+        "php": "~7.2"
     },
     "platform-dev": []
 }

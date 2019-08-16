@@ -16,8 +16,17 @@ class Operand extends Token {
 
     }
 
-    public function isOperand() {
+    public function isOperand(): bool {
         return true;
+    }
+
+    public function isValidChar( string $char ): bool {
+
+        if( preg_match('/[0-9.]/', $char) ) {
+            return true;
+        }
+        return false;
+
     }
 
 }
