@@ -8,6 +8,10 @@ class Operand extends Token {
 
     const TYPE = self::OPERAND;
 
+    const NUMBER = 'number';
+
+
+
     public function __construct( string $token ) {
 
         if( !is_numeric($token) ) {
@@ -22,12 +26,11 @@ class Operand extends Token {
         return true;
     }
 
-    public function isValidChar( string $char ): bool {
+    public static function getPatterns(): array {
 
-        if( preg_match('/[0-9.]/', $char) ) {
-            return true;
-        }
-        return false;
+        return [
+            static::NUMBER => '/^((-?[0-9]+\.[0-9]+)|(-?[0-9]+))/',
+        ];
 
     }
 

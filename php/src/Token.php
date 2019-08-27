@@ -61,4 +61,8 @@ abstract class Token {
         return 0;
     }
 
+    public function __toString(): string {
+        return $this->token;
+    }
+
 }

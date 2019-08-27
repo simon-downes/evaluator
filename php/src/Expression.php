@@ -14,6 +14,8 @@ class Expression {
 
         $this->expr = mb_strtolower($expr);
 
+        print_r(Operator::getPatterns());
+
         $this->tokenise();
 
     }
@@ -26,55 +28,50 @@ class Expression {
 
     protected function tokenise(): void {
 
-        $token_type = null;
-        $token      = '';
-
-        $char_type = null;
-        $char      = '';
-
         $this->tokens = [];
 
-        $expr_len = strlen($this->expr);
+        $expr = $this->expr;
 
-        for( $i = 0; $i < $expr_len; $i++ ) {
+        $token_patterns = [
+            Token::OPERAND  => Operand::getPatterns(),
+            Token::OPERATOR => Operator::getPatterns(),
+        ];
 
-            $char = $this->expr[$i];
+        print_r($token_patterns);
 
-            $char_type = $this->getCharTokenType($char);
+        $i = 0;
 
-            echo "CHR\t$char_type\t$char\n";
-
-            if( empty($token_type) ) {
-                $token_type = $char_type;
+        while( $expr ) {
+            $i++;
+            if( $i > 10 ) {
+                break;
             }
+            echo "Expr: ", $expr, "\n";
+            foreach( $token_patterns as $token_type => $patterns ) {
+                foreach( $patterns as $token => $pattern ) {
 
-            // we've changed token types so add the current token to the list and reset the buffer
-            if( $char_type != $token_type ) {
-                echo "TOKEN\t$token_type\t$token\n";
+                    if( preg_match($pattern, $expr, $matches) ) {
 
-                // handle operators followed by a negative number
-                if( $token_type == Token::OPERATOR && strlen($token) > 1 && substr($token, -1) == '-' ) {
-                    $this->tokens[] = Token::fromString($token_type, substr($token, 0, -1));
-                    $token = '-'. $char;
-                    $token_type = Token::OPERAND;
-                    continue;
+                        $token = Token::fromString($token_type, $matches[0]);
+
+                        print_r($token);
+
+                        $this->tokens[] = $token;
+
+                        $expr = substr($expr, strlen((string) $token));
+
+                        echo "New Expr: ", $expr, "\n";
+
+                        continue 2;
+
+                    }
                 }
-
-                $this->tokens[] = Token::fromString($token_type, $token);
-                $token_type = $char_type;
-                $token = $char;
-                continue;
             }
 
-            // haven't changed token type so append to token buffer
-            $token .= $char;
-
-
+            // TODO: should never get here as we should have grabbed a valid token, throw an exception
+            // need to track the number of characters we've removed from expr so we can give an offset
 
         }
-
-        // add the outstanding token to the list
-        $this->tokens[] = Token::fromString($token_type, $token);
 
         print_r($this->tokens);
 

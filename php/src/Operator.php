@@ -25,6 +25,18 @@ class Operator extends Token {
     const MODULO      = '%';
     const POWER       = '^';
 
+    const SIN    = 'sin';
+    const COS    = 'cos';
+    const TAN    = 'tan';
+    const ARCSIN = 'arcsin';
+    const ARCCOS = 'arccos';
+    const ARCTAN = 'arctan';
+    const LOG    = 'log';
+    const LN     = 'ln';
+    const SQRT   = 'sqrt';
+    const ABS    = 'abs';
+    const INT    = 'int';
+
     const VALID = [
         self::OR          => 20,
         self::AND         => 30,
@@ -42,6 +54,17 @@ class Operator extends Token {
         self::MULTIPLY    => 90,
         self::DIVIDE      => 90,
         self::POWER       => 100,
+        self::INT       => 110,
+        self::ABS       => 120,
+        self::SQRT      => 130,
+        self::LOG       => 140,
+        self::LN        => 140,
+        self::SIN       => 150,
+        self::COS       => 150,
+        self::TAN       => 150,
+        self::ARCSIN    => 150,
+        self::ARCCOS    => 150,
+        self::ARCTAN    => 150,
     ];
 
     public function __construct( string $token ) {
@@ -58,8 +81,16 @@ class Operator extends Token {
         return true;
     }
 
-    public function isValidChar( string $char ): bool {
-        return isset(static::VALID[$char]);
+    public static function getPatterns(): array {
+
+        $patterns = [];
+
+        foreach( static::VALID as $operator => $precedence ) {
+            $patterns[$operator] = sprintf("/^%s/", preg_quote($operator, '/'));
+        }
+
+        return $patterns;
+
     }
 
     public function getPrecedence(): int {
