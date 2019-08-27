@@ -6,6 +6,8 @@ use InvalidArgumentException;
 
 class Func extends Token {
 
+    const TYPE = self::FUNC;
+
     const SIN = 'sin';
     const COS = 'cos';
     const TAN = 'tan';
@@ -16,22 +18,22 @@ class Func extends Token {
     const LN = 'ln';
     const SQRT = 'sqrt';
     const ABS = 'abs';
-    const INC = 'inc';
+    const INT = 'int';
 
     public function __construct( string $token ) {
 
         $valid = [
-            static::SIN => true,
-            static::COS => true,
-            static::TAN => true,
-            static::ARCSIN => true,
-            static::ARCCOS => true,
-            static::ARCTAN => true,
-            static::LOG => true,
-            static::LN => true,
-            static::SQRT => true,
-            static::ABS => true,
-            static::INC => true,
+            static::INT    => 110,
+            static::ABS    => 120,
+            static::SQRT   => 130,
+            static::LOG    => 140,
+            static::LN     => 140,
+            static::SIN    => 150,
+            static::COS    => 150,
+            static::TAN    => 150,
+            static::ARCSIN => 150,
+            static::ARCCOS => 150,
+            static::ARCTAN => 150,
         ];
 
         if( !isset($valid[$token]) ) {

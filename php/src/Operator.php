@@ -6,6 +6,8 @@ use InvalidArgumentException;
 
 class Operator extends Token {
 
+    const TYPE = self::OPERATOR;
+
     const ADD         = '+';
     const SUBTRACT    = '-';
     const MULTIPLY    = '*';
@@ -24,22 +26,22 @@ class Operator extends Token {
     const POWER       = '^';
 
     const VALID = [
-        self::ADD => true,
-        self::SUBTRACT => true,
-        self::MULTIPLY => true,
-        self::DIVIDE => true,
-        self::AND => true,
-        self::OR => true,
-        self::NOT => true,
-        self::EQUAL => true,
-        self::LT => true,
-        self::LT_EQUAL => true,
-        self::GT => true,
-        self::GT_EQUAL => true,
-        self::OPEN_PAREN => true,
-        self::CLOSE_PAREN => true,
-        self::MODULO => true,
-        self::POWER => true,
+        self::OR          => 20,
+        self::AND         => 30,
+        self::NOT         => 40,
+        self::EQUAL       => 50,
+        self::LT          => 50,
+        self::LT_EQUAL    => 50,
+        self::GT          => 50,
+        self::GT_EQUAL    => 50,
+        self::OPEN_PAREN  => 60,
+        self::CLOSE_PAREN => 70,
+        self::ADD         => 70,
+        self::SUBTRACT    => 70,
+        self::MODULO      => 80,
+        self::MULTIPLY    => 90,
+        self::DIVIDE      => 90,
+        self::POWER       => 100,
     ];
 
     public function __construct( string $token ) {
@@ -58,6 +60,10 @@ class Operator extends Token {
 
     public function isValidChar( string $char ): bool {
         return isset(static::VALID[$char]);
+    }
+
+    public function getPrecedence(): int {
+        return 0;
     }
 
 }

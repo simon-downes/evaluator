@@ -6,6 +6,8 @@ use InvalidArgumentException;
 
 class Operand extends Token {
 
+    const TYPE = self::OPERAND;
+
     public function __construct( string $token ) {
 
         if( !is_numeric($token) ) {

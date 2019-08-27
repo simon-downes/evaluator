@@ -26,15 +26,17 @@ class Expression {
 
     protected function tokenise(): void {
 
-        $token_type     = '';
-        $token          = '';
+        $token_type = null;
+        $token      = '';
 
         $char_type = null;
         $char      = '';
 
-        $tokens = [];
+        $this->tokens = [];
 
-        for( $i = 0; $i < strlen($this->expr); $i++ ) {
+        $expr_len = strlen($this->expr);
+
+        for( $i = 0; $i < $expr_len; $i++ ) {
 
             $char = $this->expr[$i];
 
@@ -42,51 +44,55 @@ class Expression {
 
             echo "CHR\t$char_type\t$char\n";
 
-            if( $i == 0 ) {
+            if( empty($token_type) ) {
                 $token_type = $char_type;
             }
 
-            // haven't changed token type so append to token buffer
+            // we've changed token types so add the current token to the list and reset the buffer
             if( $char_type != $token_type ) {
                 echo "TOKEN\t$token_type\t$token\n";
-                // we've changed token types so add the current token to the list and reset the buffer
-                //print_r("{$token_type}\t{$token}\n");
-                $tokens[] = Token::fromString($token_type, $token);
+
+                // handle operators followed by a negative number
+                if( $token_type == Token::OPERATOR && strlen($token) > 1 && substr($token, -1) == '-' ) {
+                    $this->tokens[] = Token::fromString($token_type, substr($token, 0, -1));
+                    $token = '-'. $char;
+                    $token_type = Token::OPERAND;
+                    continue;
+                }
+
+                $this->tokens[] = Token::fromString($token_type, $token);
                 $token_type = $char_type;
                 $token = $char;
                 continue;
-                }
+            }
 
+            // haven't changed token type so append to token buffer
             $token .= $char;
 
 
 
         }
 
-        print_r($tokens);
+        // add the outstanding token to the list
+        $this->tokens[] = Token::fromString($token_type, $token);
 
-        // convert string to tokens
-        $t = new Operand('-123.45');
-        $t = new Operator(Operator::ADD);
-        $t = new Func(Func::TAN);
-
-        $this->tokens = [];
+        print_r($this->tokens);
 
     }
 
     protected function getCharTokenType( string $char ): string {
 
-        if( Operator::isValidChar($char) ) {
-            return Token::OPERATOR;
-        }
-        elseif( Operand::isValidChar($char) ) {
-            return Token::OPERAND;
-        }
-        elseif( Func::isValidChar($char) ) {
-            return Token::FUNC;
-        }
-        elseif( Whitespace::isValidChar($char) ) {
-            return Token::WHITESPACE;
+        $token_types = [
+            Operator::class,
+            Operand::class,
+            Func::class,
+            Whitespace::class,
+        ];
+
+        foreach( $token_types as $class ) {
+            if( $class::isValidChar($char) ) {
+                return $class::TYPE;
+            }
         }
 
         throw new InvalidArgumentException("Unknown character: '{$char}'");

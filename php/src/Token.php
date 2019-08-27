@@ -10,6 +10,8 @@ abstract class Token {
     const OPERAND    = 'operand';
     const FUNC       = 'function';
 
+    const TYPE = self::NONE;
+
     protected $token;
 
     public function __construct( string $token ) {
@@ -35,6 +37,10 @@ abstract class Token {
 
     }
 
+    public function getType(): string {
+        return static::TYPE;
+    }
+
     public function isOperator(): bool {
         return false;
     }
@@ -49,6 +55,10 @@ abstract class Token {
 
     public function isValidChar( string $char ): bool {
         return false;
+    }
+
+    public function getPrecedence(): int {
+        return 0;
     }
 
 }

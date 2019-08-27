@@ -6,6 +6,8 @@ use InvalidArgumentException;
 
 class Whitespace extends Token {
 
+    const TYPE = self::WHITESPACE;
+
     const SPACE           = ' ';
     const TAB             = "\t";
     const NEW_LINE        = "\n";
