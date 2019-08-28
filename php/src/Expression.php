@@ -16,7 +16,13 @@ class Expression {
 
         print_r(Operator::getPatterns());
 
-        $this->tokenise();
+        $l = new Lexer();
+
+        $l->addToken(Token::OPERAND, 'number', '/^((-?[0-9]+\.[0-9]+)|(-?[0-9]+))/');
+        $l->addToken(Token::OPERATOR, '+');
+        $l->addToken(Token::WHITESPACE, ' ');
+
+        $l->tokenise('-12.45+ 45');
 
     }
 

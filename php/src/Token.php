@@ -5,10 +5,9 @@ namespace Evaluator;
 abstract class Token {
 
     const NONE       = 'none';
-    const WHITESPACE = 'whitespace';
     const OPERATOR   = 'operator';
     const OPERAND    = 'operand';
-    const FUNC       = 'function';
+    const WHITESPACE = 'whitespace';
 
     const TYPE = self::NONE;
 
@@ -21,8 +20,6 @@ abstract class Token {
     public static function fromString( string $type, string $token ) {
 
         switch( $type ) {
-            case static::WHITESPACE:
-                return new Whitespace($token);
 
             case static::OPERATOR:
                 return new Operator($token);
@@ -30,10 +27,12 @@ abstract class Token {
             case static::OPERAND:
                 return new Operand($token);
 
-            case static::FUNC:
-                return new Func($token);
+            case static::WHITESPACE:
+                return new Whitespace($token);
 
         }
+
+        print_r("Nope: $type");
 
     }
 
@@ -46,14 +45,6 @@ abstract class Token {
     }
 
     public function isOperand(): bool {
-        return false;
-    }
-
-    public function isFunction(): bool {
-        return false;
-    }
-
-    public function isValidChar( string $char ): bool {
         return false;
     }
 
