@@ -11,6 +11,36 @@ class Token {
     const OPERAND    = 'operand';
     const WHITESPACE = 'whitespace';
 
+    const NUMBER      = 'number';
+    const SPACE       = 'space';
+    const ADD         = 'add';
+    const SUBTRACT    = 'subtract';
+    const MULTIPLY    = 'multiply';
+    const DIVIDE      = 'divide';
+    const AND         = 'and';
+    const OR          = 'or';
+    const NOT         = 'not';
+    const EQ          = 'eq';
+    const LT          = 'lt';
+    const LTE         = 'lte';
+    const GT          = 'gt';
+    const GTE         = 'gte';
+    const OPEN_PAREN  = 'open_paren';
+    const CLOSE_PAREN = 'close_paren';
+    const MODULO      = 'modulo';
+    const POWER       = 'power';
+    const SIN         = 'sin';
+    const COS         = 'cos';
+    const TAN         = 'tan';
+    const ARCSIN      = 'arcsin';
+    const ARCCOS      = 'arccos';
+    const ARCTAN      = 'arctan';
+    const LOG         = 'log';
+    const LN          = 'ln';
+    const SQRT        = 'sqrt';
+    const ABS         = 'abs';
+    const INT         = 'int';
+
     protected $type;
 
     protected $name;
