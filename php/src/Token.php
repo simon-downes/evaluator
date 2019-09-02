@@ -2,58 +2,61 @@
 
 namespace Evaluator;
 
-abstract class Token {
+use InvalidArgumentException;
+
+class Token {
 
     const NONE       = 'none';
     const OPERATOR   = 'operator';
     const OPERAND    = 'operand';
     const WHITESPACE = 'whitespace';
 
-    const TYPE = self::NONE;
+    protected $type;
 
-    protected $token;
+    protected $name;
 
-    public function __construct( string $token ) {
-        $this->token = $token;
-    }
+    protected $value;
 
-    public static function fromString( string $type, string $token ) {
+    public function __construct( string $type, string $name, string $value = '' ) {
 
-        switch( $type ) {
-
-            case static::OPERATOR:
-                return new Operator($token);
-
-            case static::OPERAND:
-                return new Operand($token);
-
-            case static::WHITESPACE:
-                return new Whitespace($token);
-
+        if( !in_array($type, [static::NONE, static::OPERATOR, static::OPERAND, static::WHITESPACE]) ) {
+            throw new InvalidArgumentException("Unknown token type: {$type}");
         }
 
-        print_r("Nope: $type");
+        if( empty($name) ) {
+            throw new InvalidArgumentException("Tokens must have a name");
+        }
+
+        $this->type  = $type;
+        $this->name  = $name;
+        $this->value = $value;
 
     }
 
-    public function getType(): string {
-        return static::TYPE;
+    public function __get( $key ) {
+
+        if( in_array($key, ['type', 'name', 'value']) ) {
+            return $this->$key;
+        }
+
+        return null;
+
+    }
+
+    public function isWhitespace(): bool {
+        return $this->type == static::WHITESPACE;
     }
 
     public function isOperator(): bool {
-        return false;
+        return $this->type == static::OPERATOR;
     }
 
     public function isOperand(): bool {
-        return false;
-    }
-
-    public function getPrecedence(): int {
-        return 0;
+        return $this->type == static::OPERAND;
     }
 
     public function __toString(): string {
-        return $this->token;
+        return "{$this->type}::{$this->name}::{$this->value}";
     }
 
 }

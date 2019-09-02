@@ -8,17 +8,58 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Evaluator\Expression;
+use Evaluator\ExpressionEvaluator;
+use Evaluator\Lexer;
+use Evaluator\Token;
 
 (new Application('Evaluator', '1.0.0'))
     ->register('evaluate')
         ->addArgument('expr', InputArgument::REQUIRED, 'The expression to evaluate')
         ->setCode(function(InputInterface $input, OutputInterface $output) {
+
+
+            $lexer = new Lexer();
+
+            $lexer->addToken(Token::OPERAND, 'number', '/^((-?[0-9]+\.[0-9]+)|(-?[0-9]+))/');
+
+            $lexer->addToken(Token::WHITESPACE, 'space','/^ /');
+
+            $lexer->addToken(Token::OPERATOR, 'add', '/^\+/');
+            $lexer->addToken(Token::OPERATOR, 'subtract', '/^-/');
+            $lexer->addToken(Token::OPERATOR, 'multiply', '/^*/');
+            $lexer->addToken(Token::OPERATOR, 'divide', '/^//');
+            $lexer->addToken(Token::OPERATOR, 'and', '/^&/');
+            $lexer->addToken(Token::OPERATOR, 'or', '/^\|/');
+            $lexer->addToken(Token::OPERATOR, 'not', '/^!/');
+            $lexer->addToken(Token::OPERATOR, 'equal', '/^=/');
+            $lexer->addToken(Token::OPERATOR, 'lt', '/^</');
+            $lexer->addToken(Token::OPERATOR, 'lt_equal', '/^<=/');
+            $lexer->addToken(Token::OPERATOR, 'gt', '/^>/');
+            $lexer->addToken(Token::OPERATOR, 'gt_equal', '/^>=/');
+            $lexer->addToken(Token::OPERATOR, 'open_paren', '/^\(/');
+            $lexer->addToken(Token::OPERATOR, 'close_paren', '/^\)/');
+            $lexer->addToken(Token::OPERATOR, 'modulo', '/^%/');
+            $lexer->addToken(Token::OPERATOR, 'power', '/^\^/');
+
+            $lexer->addToken(Token::OPERATOR, 'sin', '/^sin/');
+            $lexer->addToken(Token::OPERATOR, 'cos', '/^cos/');
+            $lexer->addToken(Token::OPERATOR, 'tan', '/^tan/');
+            $lexer->addToken(Token::OPERATOR, 'arcsin', '/^arcsin/');
+            $lexer->addToken(Token::OPERATOR, 'arccos', '/^arccos/');
+            $lexer->addToken(Token::OPERATOR, 'arctan', '/^arctan/');
+            $lexer->addToken(Token::OPERATOR, 'log', '/^log/');
+            $lexer->addToken(Token::OPERATOR, 'ln', '/^ln/');
+            $lexer->addToken(Token::OPERATOR, 'sqrt', '/^sqrt/');
+            $lexer->addToken(Token::OPERATOR, 'abs', '/^abs/');
+            $lexer->addToken(Token::OPERATOR, 'int', '/^int/');
+
+
             $output->writeln(
-                (new Expression(
-                        $input->getArgument('expr')
-                ))->evaluate()
+                (new ExpressionEvaluator($lexer))->evaluate(
+                    $input->getArgument('expr')
+                )
             );
+
         })
     ->getApplication()
     ->setDefaultCommand('evaluate', true) // Single command application
