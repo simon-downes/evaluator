@@ -28,7 +28,9 @@ class ExpressionEvaluator {
 
         print_r($tokens);
 
-        return $expression;
+        $result = $this->evaluatePostfix($tokens);
+
+        return $result;
 
     }
 
@@ -72,10 +74,10 @@ class ExpressionEvaluator {
 
                     while( $this->getPrecedence($token) <= $this->getPrecedence($top) ) {
                         $out[] = array_pop($stack);
-                        $top = end($stack);
                         if( empty($stack) ) {
                             break;
                         }
+                        $top = end($stack);
                     }
 
                 }
@@ -99,13 +101,178 @@ class ExpressionEvaluator {
 
     }
 
-    public function getPrecedence( $token ) {
+    protected function evaluatePostfix( array $tokens ): string {
 
-        if( empty($token) || !$token->isOperator() ) {
-            return 1000;
+        // loop through the tokens
+        // if the current token is an operand then push it onto the stack
+        // else pop the desired number of operands from the stack (according to the operator),
+        // perform the operation and push the result onto the stack.
+
+        $stack = [];
+
+        foreach( $tokens as $token ) {
+
+            if( $token->isOperand() ) {
+                $stack[] = $token->value;
+                continue;
+            }
+
+            switch( $token->name ) {
+                case Token::ADD:
+                    print_r($stack);
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = $op1 + $op2;
+                    break;
+
+                case Token::SUBTRACT:
+
+                    break;
+
+                case Token::MULTIPLY:
+
+                    break;
+
+                case Token::DIVIDE:
+
+                    break;
+
+                case Token::AND:
+
+                    break;
+
+                case Token::OR:
+
+                    break;
+
+                case Token::NOT:
+
+                    break;
+
+                case Token::EQ:
+
+                    break;
+
+                case Token::LT:
+
+                    break;
+
+                case Token::LTE:
+
+                    break;
+
+                case Token::GT:
+
+                    break;
+
+                case Token::GTE:
+
+                    break;
+
+                case Token::OPEN_PAREN:
+
+                    break;
+
+                case Token::CLOSE_PAREN:
+
+                    break;
+
+                case Token::MODULO:
+
+                    break;
+
+                case Token::POWER:
+
+                    break;
+
+                case Token::SIN:
+
+                    break;
+
+                case Token::COS:
+
+                    break;
+
+                case Token::TAN:
+                    $op1 = array_pop($stack);
+                    $stack[] = tan($op1);
+                    break;
+
+                case Token::ARCSIN:
+
+                    break;
+
+                case Token::ARCCOS:
+
+                    break;
+
+                case Token::ARCTAN:
+
+                    break;
+
+                case Token::LOG:
+
+                    break;
+
+                case Token::LN:
+
+                    break;
+
+                case Token::SQRT:
+
+                    break;
+
+                case Token::ABS:
+
+                    break;
+
+                case Token::INT:
+
+                    break;
+
+            }
+
         }
 
-        return 0;
+        print_r($stack);
+
+        return (string) reset($stack);
+
+    }
+
+    public function getPrecedence( $token ) {
+
+        $operators = [
+            Token::OR          => 20,
+            Token::AND         => 30,
+            Token::NOT         => 40,
+            Token::EQ          => 50,
+            Token::LT          => 50,
+            Token::LTE         => 50,
+            Token::GT          => 50,
+            Token::GTE         => 50,
+            Token::OPEN_PAREN  => 60,
+            Token::CLOSE_PAREN => 70,
+            Token::ADD         => 70,
+            Token::SUBTRACT    => 70,
+            Token::MODULO      => 80,
+            Token::MULTIPLY    => 90,
+            Token::DIVIDE      => 90,
+            Token::POWER       => 100,
+            Token::INT         => 110,
+            Token::ABS         => 120,
+            Token::SQRT        => 130,
+            Token::LOG         => 140,
+            Token::LN          => 140,
+            Token::SIN         => 150,
+            Token::COS         => 150,
+            Token::TAN         => 150,
+            Token::ARCSIN      => 150,
+            Token::ARCCOS      => 150,
+            Token::ARCTAN      => 150,
+        ];
+
+        return $operators[$token->name] ?? 1000;
 
     }
 
