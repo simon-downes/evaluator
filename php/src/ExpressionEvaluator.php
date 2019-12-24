@@ -119,78 +119,96 @@ class ExpressionEvaluator {
 
             switch( $token->name ) {
                 case Token::ADD:
-                    print_r($stack);
                     $op1 = array_pop($stack);
                     $op2 = array_pop($stack);
                     $stack[] = $op1 + $op2;
                     break;
 
                 case Token::SUBTRACT:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = $op1 - $op2;
                     break;
 
                 case Token::MULTIPLY:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = $op1 * $op2;
                     break;
 
                 case Token::DIVIDE:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = $op1 / $op2;
                     break;
 
                 case Token::AND:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = (int) ($op1 && $op2);
                     break;
 
                 case Token::OR:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = (int) ($op1 || $op2);
                     break;
 
                 case Token::NOT:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = (int) !$op1;
                     break;
 
                 case Token::EQ:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = (int) ($op1 == $op2);
                     break;
 
                 case Token::LT:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = (int) ($op1 < $op2);
                     break;
 
                 case Token::LTE:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = (int) ($op1 <= $op2);
                     break;
 
                 case Token::GT:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = (int) ($op1 > $op2);
                     break;
 
                 case Token::GTE:
-
-                    break;
-
-                case Token::OPEN_PAREN:
-
-                    break;
-
-                case Token::CLOSE_PAREN:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = (int) ($op1 >= $op2);
                     break;
 
                 case Token::MODULO:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = $op1 % $op2;
                     break;
 
                 case Token::POWER:
-
+                    $op1 = array_pop($stack);
+                    $op2 = array_pop($stack);
+                    $stack[] = $op1 ** $op2;
                     break;
 
                 case Token::SIN:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = sin($op1);
                     break;
 
                 case Token::COS:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = cos($op1);
                     break;
 
                 case Token::TAN:
@@ -199,35 +217,43 @@ class ExpressionEvaluator {
                     break;
 
                 case Token::ARCSIN:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = asin($op1);
                     break;
 
                 case Token::ARCCOS:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = acos($op1);
                     break;
 
                 case Token::ARCTAN:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = atan($op1);
                     break;
 
                 case Token::LOG:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = log10($op1);
                     break;
 
                 case Token::LN:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = log($op1);
                     break;
 
                 case Token::SQRT:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = sqrt($op1);
                     break;
 
                 case Token::ABS:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = abs($op1);
                     break;
 
                 case Token::INT:
-
+                    $op1 = array_pop($stack);
+                    $stack[] = int($op1);
                     break;
 
             }
