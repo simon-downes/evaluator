@@ -22,16 +22,24 @@ class ExpressionEvaluator {
 
         $tokens = $this->lexer->tokenise($expression);
 
-        print_r($tokens);
-
         $tokens = $this->reversePolish($tokens);
-
-        print_r($tokens);
 
         $result = $this->evaluatePostfix($tokens);
 
         return $result;
 
+    }
+
+    protected function debug( array $stack, array $out ) {
+        echo 'Stack: ';
+        foreach( $stack as $frame) {
+            echo $frame->value, ' ';
+        }
+        echo "\nOut: ";
+        foreach( $out as $frame) {
+            echo $frame->value, ' ';
+        }
+        echo "\n\n";
     }
 
     protected function reversePolish( array $tokens ): array {
@@ -41,17 +49,20 @@ class ExpressionEvaluator {
 
         foreach( $tokens as $token ) {
 
+
             // ignore whitespace
             if( $token->isWhitespace() ) {
                 continue;
             }
+            $this->debug($stack, $out);
+
             // if token is a closing paren then pop the stack until an open paren is found is found or the stack is empty
-            elseif( $token->name == Token::CLOSE_PAREN ) {
+            if( $token->name == Token::CLOSE_PAREN ) {
 
                 $current = array_pop($stack);
 
                 while( $current->name != Token::OPEN_PAREN ) {
-                    $out[] = $token;
+                    $out[] = $current;
                     if( empty($stack) ) {
                         break;
                     }
@@ -97,6 +108,8 @@ class ExpressionEvaluator {
             $out[] = array_pop($stack);
         }
 
+        $this->debug($stack, $out);
+
         return $out;
 
     }
@@ -117,152 +130,16 @@ class ExpressionEvaluator {
                 continue;
             }
 
-            switch( $token->name ) {
-                case Token::ADD:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = $op1 + $op2;
-                    break;
-
-                case Token::SUBTRACT:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = $op1 - $op2;
-                    break;
-
-                case Token::MULTIPLY:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = $op1 * $op2;
-                    break;
-
-                case Token::DIVIDE:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = $op1 / $op2;
-                    break;
-
-                case Token::AND:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = (int) ($op1 && $op2);
-                    break;
-
-                case Token::OR:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = (int) ($op1 || $op2);
-                    break;
-
-                case Token::NOT:
-                    $op1 = array_pop($stack);
-                    $stack[] = (int) !$op1;
-                    break;
-
-                case Token::EQ:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = (int) ($op1 == $op2);
-                    break;
-
-                case Token::LT:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = (int) ($op1 < $op2);
-                    break;
-
-                case Token::LTE:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = (int) ($op1 <= $op2);
-                    break;
-
-                case Token::GT:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = (int) ($op1 > $op2);
-                    break;
-
-                case Token::GTE:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = (int) ($op1 >= $op2);
-                    break;
-
-                case Token::MODULO:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = $op1 % $op2;
-                    break;
-
-                case Token::POWER:
-                    $op1 = array_pop($stack);
-                    $op2 = array_pop($stack);
-                    $stack[] = $op1 ** $op2;
-                    break;
-
-                case Token::SIN:
-                    $op1 = array_pop($stack);
-                    $stack[] = sin($op1);
-                    break;
-
-                case Token::COS:
-                    $op1 = array_pop($stack);
-                    $stack[] = cos($op1);
-                    break;
-
-                case Token::TAN:
-                    $op1 = array_pop($stack);
-                    $stack[] = tan($op1);
-                    break;
-
-                case Token::ARCSIN:
-                    $op1 = array_pop($stack);
-                    $stack[] = asin($op1);
-                    break;
-
-                case Token::ARCCOS:
-                    $op1 = array_pop($stack);
-                    $stack[] = acos($op1);
-                    break;
-
-                case Token::ARCTAN:
-                    $op1 = array_pop($stack);
-                    $stack[] = atan($op1);
-                    break;
-
-                case Token::LOG:
-                    $op1 = array_pop($stack);
-                    $stack[] = log10($op1);
-                    break;
-
-                case Token::LN:
-                    $op1 = array_pop($stack);
-                    $stack[] = log($op1);
-                    break;
-
-                case Token::SQRT:
-                    $op1 = array_pop($stack);
-                    $stack[] = sqrt($op1);
-                    break;
-
-                case Token::ABS:
-                    $op1 = array_pop($stack);
-                    $stack[] = abs($op1);
-                    break;
-
-                case Token::INT:
-                    $op1 = array_pop($stack);
-                    $stack[] = int($op1);
-                    break;
-
-            }
+            $stack = Operator::{$token->name}($stack);
 
         }
 
-        print_r($stack);
-
         return (string) reset($stack);
+
+    }
+
+    protected function doSingleOp( array $stack, $operator ) {
+
 
     }
 
